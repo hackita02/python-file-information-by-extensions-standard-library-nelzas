@@ -7,7 +7,14 @@ in a specified folder.
 
 # import sys
 import argparse
+from pathlib import Path
 
+
+def gather_info_from_folder(path):
+    folder = Path(path)
+    for p in folder.iterdir():
+        if not p.is_dir():
+            print(p, p.is_dir(), p.is_file(), p.stat().st_size, p.suffix)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -17,4 +24,6 @@ if __name__ == '__main__':
                         help='name of folder to scan')
 
     args = parser.parse_args()
-    print(args.path)
+    print("args.path:", args.path)
+    print()
+    gather_info_from_folder(args.path)
