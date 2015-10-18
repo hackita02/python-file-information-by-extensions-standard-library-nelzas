@@ -12,6 +12,8 @@ from collections import defaultdict
 
 
 def create_folder_data():
+    ''' default values for ifiles data dict
+    '''
     return {
         'num of files': 0,
         'total size': 0,
@@ -19,10 +21,15 @@ def create_folder_data():
 
 
 def gather_info_from_folder(path):
+    ''' look for files in path supplied and build dict where extensions are keys
+        and values are number of files and total sizes of files with extension
+        the dict is returned
+    '''
     folder = Path(path)
     files_data_by_ext = defaultdict(create_folder_data)
     for p in folder.iterdir():
         if not p.is_dir():
+            # use a dot for empty suffix
             if p.suffix == '':
                 suffix = '.'
             else:
@@ -32,11 +39,15 @@ def gather_info_from_folder(path):
     return files_data_by_ext
 
 
-def display_files_data(files_data_by_ext):
+def display_files_data_sorted_by_ext(files_data_by_ext):
+    ''' display data  from dict received
+    '''
     keys = list(files_data_by_ext.keys())
     keys.sort()
     for k in keys:
-        print(k, files_data_by_ext[k]['num of files'], files_data_by_ext[k]['total size'])
+        print(k,
+              files_data_by_ext[k]['num of files'],
+              files_data_by_ext[k]['total size'])
 
 
 if __name__ == '__main__':
@@ -48,4 +59,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     files_data_by_ext = gather_info_from_folder(args.path)
-    display_files_data(files_data_by_ext)
+    display_files_data_sorted_by_ext(files_data_by_ext)
